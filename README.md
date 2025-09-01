@@ -1,58 +1,52 @@
-# 🛒 RFM Segmentation for Retail Customer Insights  | Python
+# 🛍️ RFM Segmentation for Retail Customer Insights | Python
 
-![image](https://github.com/user-attachments/assets/b90b73a6-aaa6-44ad-9749-a798ebaf4632)
-
-**Author:** Bùi Xuân Bảo Duy (Kelvin)
-
-**Date:** July 2025
-
+**Author:** Bùi Xuân Bảo Duy (Kelvin)  
+**Date:** July 2025  
 **Tools Used:** Python  
 
-## 📑 Table of Contents
+## 🗂️ Table of Contents
+[1️⃣ Context]  
+[2️⃣ Dataset Description & Data Structure]  
+[3️⃣ Data Cleaning & EDA]  
+[4️⃣ RFM Analysis]  
+[5️⃣ Visualization]  
+[6️⃣ Insights & Recommendations]  
 
-[📌 1. Context]  
-[📂 2. Dataset Description & Data Structure (DD & DS)]  
-[🧹 3. Data Cleaning & EDA]  
-[🧮 4. RFM Analysis]  
-[📊 5. Visualization]  
-[💡 6. Insights & Recommendation]  
+---
 
-## 1. 📌 Context
+## 1️⃣ Context
 
-📖 **Main Context**  
+📘 **Main Context**  
 - **SuperStore** is a global retail company with a large and diverse customer base.  
 - The company is facing **financial challenges**, requiring **data-driven decision-making** across departments.  
 - The **Marketing Department** plans strategic **Christmas and New Year campaigns** to strengthen customer relationships and drive growth cost-effectively.  
 - The **customer dataset** is too large for **manual segmentation** this year.  
 - To ensure **efficient resource allocation** and **campaign planning**, the **Data Analytics & Operations team** proposes building an **RFM-based segmentation workflow in Python** to support Marketing's strategy while aligning with the company's overall **operational goals**.  
 
-👤 **Who is/are this project for?**  
+👥 **Who is this project for?**  
+- Data Analytics & Operations Team  
+- Marketing & Sales Teams  
+- Decision-makers & stakeholders  
 
-✔️ **Data Analytics & Operations Team**  
-✔️ **Marketing Team & Sales Team**  
-✔️ **Decision-makers & stakeholders**  
-
-👤 **Objective**  
-
+🎯 **Objective**  
 To segment customers using RFM analysis to identify high-value groups, uncover behavioral patterns, and provide actionable insights that support customer retention and targeted marketing—especially under financial constraints.
 
-👤 **Tool used**  
+🛠️ **Tools Used**  
+- Excel: For initial data storage  
+- Google Colab (Python): For data cleaning, preprocessing, RFM analysis, segmentation, and visualization  
 
-- Excel: Used for initial data storage.  
-- Google Colab (Python): Used for data cleaning, preprocessing, RFM analysis, customer segmentation, and visualization.  
+---
 
-## 2. 📂 Dataset Description & Data Structure (DD&DS)  
+## 2️⃣ Dataset Description & Data Structure (DD & DS)
 
-### 📌 Data Description  
-- Size: 541,909 rows × 8 columns  
-- Sheet 1: E-commerce retail, Sheet 2: Segmentation  
-- Format: .xlsx  
+### 📊 Data Description  
+- **Size:** 541,909 rows × 8 columns  
+- **Sheets:** E-commerce retail, Segmentation  
+- **Format:** .xlsx  
+- **Time range:** 01/12/2010 – 09/12/2011  
+- **Business type:** UK-based, non-store online retailer specializing in unique all-occasion gifts  
 
-### 📌 Data Detail
-- Time range: 01/12/2010 – 09/12/2011  
-- Business type: UK-based, non-store online retailer specializing in unique all-occasion gifts
-
-#### 📌 E-commerce Retail Schema  
+#### 🗃️ E-commerce Retail Schema
 
 | Column Name   | Data Type        | Description                                                     |
 |---------------|------------------|-----------------------------------------------------------------|
@@ -65,7 +59,7 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 | CustomerID     | float64          | Unique identifier for each customer.                            |
 | Country        | object           | Name of the country where the customer resides.                  |
 
-#### 📌 Segmentation & RFM Score  
+#### 🏷️ Segmentation & RFM Score  
 
 | Segment               | RFM Score                                                                                                                        |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -81,4 +75,6 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 | Hibernating customers  | 332, 322, 233, 232, 223, 222, 132, 123, 122, 212, 211                                                                             |
 | Lost customers         | 111, 112, 121, 131, 141, 151                                                                                                     |
 
-## 3. 🧹 Data Cleaning & EDA
+---
+
+## 3️⃣ Data Cleaning & EDA
