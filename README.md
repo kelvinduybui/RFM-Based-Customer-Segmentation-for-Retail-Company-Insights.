@@ -46,7 +46,7 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 - **Time range:** 01/12/2010 – 09/12/2011  
 - **Business type:** UK-based, non-store online retailer specializing in unique all-occasion gifts  
 
-#### 🗃️ E-commerce Retail Schema
+### 🗃️ E-commerce Retail Schema
 
 | Column Name   | Data Type        | Description                                                     |
 |---------------|------------------|-----------------------------------------------------------------|
@@ -59,7 +59,7 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 | CustomerID     | float64          | Unique identifier for each customer.                            |
 | Country        | object           | Name of the country where the customer resides.                  |
 
-#### 🏷️ Segmentation & RFM Score  
+### 🏷️ Segmentation & RFM Score  
 
 | Segment               | RFM Score                                                                                                                        |
 |-----------------------|----------------------------------------------------------------------------------------------------------------------------------|
@@ -78,9 +78,8 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 ---
 
 ## 3️⃣ Data Cleaning & EDA  
+### 📦 Import Libraries  
 
-### Data Cleaning  
-#### 🏷️ Import Libraries  
 ```python
 # import libraries
 import pandas as pd  
@@ -89,21 +88,84 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 ```
 
-#### Read Excel file
+### 📁 Read Excel file  
+
 ```python
 # Read Excel file
 df =pd.read_excel('/content/ecommerce retail.xlsx')
 ```
-#### Explore data
-```python
-df.info()
+
+### 🔎 Explore data  
+```python  
+df.info()  
 ```
-![Image]
-```python
-df.describe()
+
+![Image]  
+
+```python  
+df.describe()  
+```  
+![Image]  
+
+```python  
+df.head()  
 ```
-![Image]
-```python
-df.head()
+
+![Image]  
+
+### Checking null values
+```python  
+# Checking null values  
+null_values_per_column = df.isnull().sum()  
+print(null_values_per_column)  
 ```
-![Image]
+
+![Image]  
+
+Null values in Description are acceptable, but nulls in CustomerID are not, as customer segmentation requires valid customer identifiers  
+=> We drop null values in CustomerID  
+
+### Drop null values
+```python  
+# Drop null values  
+df = df.dropna(subset=['CustomerID'])  
+df['CustomerID'] = df['CustomerID'].astype(int)  
+df.count()
+```
+
+![Image]  
+
+As we can see, the number of rows has been dropped to 406,829  
+
+### Standardize date format  
+Since the current date is set to 31/12/2011, it must be explicitly defined for further calculations  
+```python  
+# Standardize date format  
+df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])  
+current_date = pd.to_datetime('31/12/2011', format='%d/%m/%Y')  
+```
+
+### Handle duplicated values  
+
+There are two types of duplicate records in the dataset:  
+
+- **Fully duplicated rows**: All values in the columns `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID`, and `Quantity` are exactly the same.  
+
+- **Partially duplicated rows**: The columns `InvoiceNo`, `StockCode`, `InvoiceDate`, and `CustomerID` are the same, but the `Quantity` values differ.  
+
+**Data cleaning steps:**  
+1. Remove all fully duplicated rows.  
+2. For partially duplicated rows (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`), sum up the quantities to consolidate them into single entries.  
+
+```python  
+# Drop duplicate rows
+df = df.drop_duplicates(subset=['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID', 'Quantity'])
+# Sum duplicated InvoiceID but different quantity
+df = df.groupby(['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID'], as_index=False).agg({
+'Quantity': 'sum',
+'Description': 'first',
+'UnitPrice': 'first',
+'Country': 'first'
+})
+df = df[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']] 
+```
