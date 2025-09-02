@@ -136,8 +136,8 @@ print(null_values_per_column)
 ![Image]  
 
 ⚠️ Note:  
-Null values in **Description** ✅ acceptable  
-Null values in **CustomerID** ❌ not acceptable (as customer segmentation requires valid customer identifiers)
+- Null values in **Description** ✅ acceptable  
+- Null values in **CustomerID** ❌ not acceptable (as customer segmentation requires valid customer identifiers)
 => We **drop** null values in CustomerID  
 
 ### 🧹 Drop null values  
@@ -228,3 +228,21 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 ![Image]  
 
 🟢 As a result, no invalid Quantity found, we’ll move to the next phase  
+
+## 4️⃣ RFM Analysis
+
+### What’s RFM Model?
+
+RFM model: a segmentation technique used in marketing and customer relationship management.  
+Objective: to segment and understand customer behavior which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segements.  
+
+Image  
+
+**Recency (R)**  
+How recently a customer made a purchase. The more recent the purchase purchase, the higher the score.  
+
+**Frequency (F)**  
+How often a customer makes a purchase over a specific period. Higher frequency means a higher score.  
+
+**Monetary Value (M)**  
+How much money a customer spends over a given period. Higher spending results in a higher score  
