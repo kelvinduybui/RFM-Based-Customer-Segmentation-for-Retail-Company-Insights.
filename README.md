@@ -80,6 +80,7 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 ## 3️⃣ Data Cleaning & EDA  
 ### 📦 Import Libraries  
 
+**Python code:**  
 ```python
 # import libraries
 import pandas as pd  
@@ -90,42 +91,55 @@ import seaborn as sns
 
 ### 📁 Read Excel file  
 
+**Python code:**
 ```python
 # Read Excel file
 df =pd.read_excel('/content/ecommerce retail.xlsx')
 ```
 
 ### 🔎 Explore data  
+
+**Python code:**  
 ```python  
 df.info()  
 ```
 
+**Result**  
 ![Image]  
 
+**Python code:**  
 ```python  
 df.describe()  
-```  
+```
+
+**Result**  
 ![Image]  
 
+**Python code:**  
 ```python  
 df.head()  
 ```
 
+**Result**  
 ![Image]  
 
-### Checking null values
+### Checking null values  
+
+**Python code:**  
 ```python  
 # Checking null values  
 null_values_per_column = df.isnull().sum()  
 print(null_values_per_column)  
 ```
 
+**Result**  
 ![Image]  
 
 Null values in Description are acceptable, but nulls in CustomerID are not, as customer segmentation requires valid customer identifiers  
 => We drop null values in CustomerID  
 
-### Drop null values
+### Drop null values  
+**Python code:**  
 ```python  
 # Drop null values  
 df = df.dropna(subset=['CustomerID'])  
@@ -133,12 +147,15 @@ df['CustomerID'] = df['CustomerID'].astype(int)
 df.count()
 ```
 
+**Result**  
 ![Image]  
 
 As we can see, the number of rows has been dropped to 406,829  
 
 ### Standardize date format  
 Since the current date is set to 31/12/2011, it must be explicitly defined for further calculations  
+
+**Python code:**  
 ```python  
 # Standardize date format  
 df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])  
@@ -157,6 +174,7 @@ There are two types of duplicate records in the dataset:
 1. Remove all fully duplicated rows.  
 2. For partially duplicated rows (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`), sum up the quantities to consolidate them into single entries.  
 
+**Python code:**  
 ```python  
 # Drop duplicate rows
 df = df.drop_duplicates(subset=['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID', 'Quantity'])
