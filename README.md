@@ -77,4 +77,33 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 
 ---
 
-## 3️⃣ Data Cleaning & EDA
+## 3️⃣ Data Cleaning & EDA  
+
+### Data Cleaning  
+#### 🏷️ Import Libraries  
+```python
+# import libraries
+import pandas as pd  
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+#### Read Excel file
+```python
+# Read Excel file
+df =pd.read_excel('/content/ecommerce retail.xlsx')
+```
+#### Explore data
+```python
+df.info()
+```
+![Image]
+```python
+df.describe()
+```
+![Image]
+```python
+df.head()
+```
+![Image]
