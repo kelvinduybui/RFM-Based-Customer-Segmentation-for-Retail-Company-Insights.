@@ -123,7 +123,7 @@ df.head()
 **Result:**  
 ![Image]  
 
-### Checking null values  
+### 🕵️ Checking null values  
 
 **Python code:**  
 ```python  
@@ -135,10 +135,12 @@ print(null_values_per_column)
 **Result:**  
 ![Image]  
 
-Null values in Description are acceptable, but nulls in CustomerID are not, as customer segmentation requires valid customer identifiers  
-=> We drop null values in CustomerID  
+⚠️ Note:  
+Null values in **Description** ✅ acceptable
+Null values in **CustomerID** ❌ not acceptable (as customer segmentation requires valid customer identifiers)
+=> We **drop** null values in CustomerID  
 
-### Drop null values  
+### 🧹 Drop null values  
 **Python code:**  
 ```python  
 # Drop null values  
@@ -150,9 +152,9 @@ df.count()
 **Result:**  
 ![Image]  
 
-As we can see, the number of rows has been dropped to 406,829  
+📉 As we can see, the number of rows has been dropped to **406,829**.  
 
-### Standardize date format  
+### ⏳ Standardize date format  
 Since the current date is set to 31/12/2011, it must be explicitly defined for further calculations  
 
 **Python code:**  
@@ -162,7 +164,7 @@ df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 current_date = pd.to_datetime('31/12/2011', format='%d/%m/%Y')  
 ```
 
-### Handle duplicated values  
+### 🧾 Handle duplicated values  
 
 There are two types of duplicate records in the dataset:  
 
@@ -171,8 +173,8 @@ There are two types of duplicate records in the dataset:
 - **Partially duplicated rows**: The columns `InvoiceNo`, `StockCode`, `InvoiceDate`, and `CustomerID` are the same, but the `Quantity` values differ.  
 
 Data cleaning steps:  
-1. Remove all fully duplicated rows.  
-2. For partially duplicated rows (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`), sum up the quantities to consolidate them into single entries.  
+1. **Remove** all fully duplicated rows.  
+2. For partially duplicated rows (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`), **sum up** the quantities to consolidate them into single entries.  
 
 **Python code:**  
 ```python  
@@ -188,10 +190,10 @@ df = df.groupby(['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID'], as_inde
 df = df[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']] 
 ```
 
-### TotalPrice & IsCancelled
+### 💰 TotalPrice & IsCancelled
 Next, we'll generate TotalPrice & IsCancelled to df, where:  
-- TotalPrice = Quantity * UnitPrice  
-- IsCancelled = InvoiceNo that starts with "C"
+- **TotalPrice** = Quantity * UnitPrice  
+- **IsCancelled** = InvoiceNo that starts with "C"
 
 **Python code:**  
 ```python  
@@ -200,7 +202,7 @@ df['TotalPrice'] = df['Quantity'] * df['UnitPrice']
 df['IsCancelled'] = df['InvoiceNo'].astype(str).str.startswith('C')
 ```
 
-### Check if UnitPrice <0
+### 🔍 Check if UnitPrice <0
 To ensure data quality, we'll check for any records where UnitPrice <0  
 
 **Python code:**  
@@ -211,9 +213,9 @@ df[df['UnitPrice']<0]
 
 **Result:**  
 ![Image]  
-As a result, no such cases found, we’ll move to the next step  
+🟢 As a result, no invalid UnitPrice found  
 
-### Check if IsCancelled = False & Quantity <= 0  
+### 🛑 Check if IsCancelled = False & Quantity <= 0  
 To further ensure data quality, we'll check for any records where IsCancelled = False & Quantity <= 0  
 
 **Python code:**  
@@ -225,4 +227,4 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 **Result:**  
 ![Image]  
 
-As a result, no such cases found, we’ll move to the next phase
+🟢 As a result, no invalid Quantity found, we’ll move to the next phase  
