@@ -170,7 +170,7 @@ There are two types of duplicate records in the dataset:
 
 - **Partially duplicated rows**: The columns `InvoiceNo`, `StockCode`, `InvoiceDate`, and `CustomerID` are the same, but the `Quantity` values differ.  
 
-**Data cleaning steps:**  
+Data cleaning steps:  
 1. Remove all fully duplicated rows.  
 2. For partially duplicated rows (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`), sum up the quantities to consolidate them into single entries.  
 
@@ -187,3 +187,42 @@ df = df.groupby(['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID'], as_inde
 })
 df = df[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']] 
 ```
+
+### TotalPrice & IsCancelled
+Next, we'll generate TotalPrice & IsCancelled to df, where:  
+- TotalPrice = Quantity * UnitPrice  
+- IsCancelled = InvoiceNo that starts with "C"
+
+**Python code:**  
+```python  
+# Generate TotalPrice & IsCancelled
+df['TotalPrice'] = df['Quantity'] * df['UnitPrice']
+df['IsCancelled'] = df['InvoiceNo'].astype(str).str.startswith('C')
+```
+
+### Check if UnitPrice <0
+To ensure data quality, we'll check for any records where UnitPrice <0  
+
+**Python code:**  
+```python
+# Check if UnitPrice <0  
+df[df['UnitPrice']<0]
+```
+
+**Result:**  
+![Image]  
+As a result, no such cases found, we’ll move to the next step  
+
+### Check if IsCancelled = False & Quantity <= 0  
+To further ensure data quality, we'll check for any records where IsCancelled = False & Quantity <= 0  
+
+**Python code:**  
+```python
+# Check if IsCancelled = False & Quantity <= 0
+df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
+```
+
+**Result:**  
+![Image]  
+
+As a result, no such cases found, we’ll move to the next phase
