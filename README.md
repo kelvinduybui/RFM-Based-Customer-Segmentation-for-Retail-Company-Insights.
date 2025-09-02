@@ -140,7 +140,7 @@ print(null_values_per_column)
 - Null values in **CustomerID** ❌ not acceptable (as customer segmentation requires valid customer identifiers)
 => We **drop** null values in CustomerID  
 
-### 🧹 Drop null values  
+### 🧹 3.5. Drop null values  
 **Python code:**  
 ```python  
 # Drop null values  
@@ -154,7 +154,7 @@ df.count()
 
 📉 As we can see, the number of rows has been dropped to **406,829**.  
 
-### ⏳ 3.5. Standardize date format  
+### ⏳ 3.6. Standardize date format  
 Since the current date is set to 31/12/2011, it must be explicitly defined for further calculations  
 
 **Python code:**  
@@ -164,7 +164,7 @@ df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 current_date = pd.to_datetime('31/12/2011', format='%d/%m/%Y')  
 ```
 
-### 🧾 3.6. Handle duplicated values  
+### 🧾 3.7. Handle duplicated values  
 
 There are two types of duplicate records in the dataset:  
 
@@ -190,7 +190,7 @@ df = df.groupby(['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID'], as_inde
 df = df[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']] 
 ```
 
-### 💰 3.7. TotalPrice & IsCancelled  
+### 💰 3.8. TotalPrice & IsCancelled  
 Next, we'll generate TotalPrice & IsCancelled to df, where:  
 - **TotalPrice** = Quantity * UnitPrice  
 - **IsCancelled** = InvoiceNo that starts with "C"
@@ -202,7 +202,7 @@ df['TotalPrice'] = df['Quantity'] * df['UnitPrice']
 df['IsCancelled'] = df['InvoiceNo'].astype(str).str.startswith('C')
 ```
 
-### 🔍 3.8. Check if UnitPrice <0  
+### 🔍 3.9. Check if UnitPrice <0  
 To ensure data quality, we'll check for any records where UnitPrice <0  
 
 **Python code:**  
@@ -215,7 +215,7 @@ df[df['UnitPrice']<0]
 ![Image]  
 🟢 As a result, no invalid UnitPrice found  
 
-### 🛑 3.9. Check if IsCancelled = False & Quantity <= 0  
+### 🛑 3.10. Check if IsCancelled = False & Quantity <= 0  
 To further ensure data quality, we'll check for any records where IsCancelled = False & Quantity <= 0  
 
 **Python code:**  
@@ -229,20 +229,192 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 
 🟢 As a result, no invalid Quantity found, we’ll move to the next phase  
 
+---
+
 ## 4️⃣ RFM Analysis
 
 ### What’s RFM Model?
 
 RFM model: a segmentation technique used in marketing and customer relationship management.  
-Objective: to segment and understand customer behavior which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segements.  
+Objective: to segment and understand customer behavior, which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segments.  
 
 Image  
 
 **Recency (R)**  
-How recently a customer made a purchase. The more recent the purchase purchase, the higher the score.  
+How recently a customer made a purchase.The more recent the purchase, the higher the score.  
 
 **Frequency (F)**  
 How often a customer makes a purchase over a specific period. Higher frequency means a higher score.  
 
 **Monetary Value (M)**  
 How much money a customer spends over a given period. Higher spending results in a higher score  
+
+### What’s RFM Model?
+
+### Calculate RFM  
+Next, we’ll calculate Recency, Frequency & Monetary, where:  
+- Recency: The number of days between the current date and the customer's most recent purchase (excluding cancelled orders).  
+- Frequency : The total number of unique purchase transactions (InvoiceNo), excluding cancelled orders.  
+- Monetary: The total monetary value of all transactions.  
+All group by CustomerID.
+
+```python
+# Group by CustomerID to calculate R,F,M  
+new_df = df.groupby('CustomerID').agg(  
+    Recency=('InvoiceDate', lambda x: (current_date - x[~df.loc[x.index, 'IsCancelled']].max()).days),  
+    Frequency=('InvoiceNo', lambda x: x[~x.astype(str).str.startswith('C')].nunique()),  
+    Monetary=('TotalPrice', 'sum')  
+).reset_index()  
+```
+
+### Handle unusual values  
+There will be cases where Recency returns NaN, we have to exclude them out of the model  
+
+```python  
+# Exclude null values  
+new_df = new_df.dropna()  
+```
+
+Moreover, cases where Monetary equals 0 indicate fully canceled orders—effectively meaning no purchase was made. These should be excluded from the RFM model  
+
+```python  
+# Exclude null values
+new_df.drop(new_df[new_df['Monetary'] == 0].index, inplace=True) 
+```
+
+new_df now:  
+```python   
+new_df.head()  
+```
+
+### Calculate RFM Score
+Next, we’ll calculate R_score, F_score & M_score, where:
+- R_score: Based on the recency rank (descending), with lower recency getting higher scores.
+- F_score and M_score: Based on the rank of frequency and monetary (ascending), with higher values getting higher scores.
+Each score is assigned into 5 quantiles (1 to 5), & combined to form the RFM_score
+
+```python  
+new_df['R_score'] = pd.qcut(new_df['Recency'].rank(method='first', ascending=False), 5, labels=[1, 2, 3, 4, 5])
+new_df['F_score'] = pd.qcut(new_df['Frequency'].rank(method='first'), 5, labels=[1, 2, 3, 4, 5])
+new_df['M_score'] = pd.qcut(new_df['Monetary'].rank(method='first'), 5, labels=[1, 2, 3, 4, 5])
+new_df['RFM_score'] = new_df['R_score'].astype(str) + new_df['F_score'].astype(str) + new_df['M_score'].astype(str)
+```
+
+### RFM Segmentation  
+
+```python  
+def assign_segment(rfm_score):  
+    if rfm_score in ['555', '554', '544', '545', '454', '455', '445']:  
+        return 'Champions'
+    elif rfm_score in ['543', '444', '435', '355', '354', '345', '344', '335']:
+        return 'Loyal'
+    elif rfm_score in ['553','551','552','541','542','533','532','531','452','451','442','441','431','453','433','432','423','353','352','351','342','341','333','323']:
+        return 'Potential Loyalist'
+    elif rfm_score in ['512', '511', '422', '421', '412', '411', '311']:
+        return 'New Customers'
+    elif rfm_score in ['525', '524', '523', '522', '521', '515', '514', '513', '425', '424', '413', '414', '415', '315', '314','313']:
+        return 'Promising'
+    elif rfm_score in ['535', '534', '443', '434', '343', '334', '325','324']:
+        return 'Need Attention'
+    elif rfm_score in ['331', '321', '312', '221', '213', '231', '241', '251']:
+        return 'About To Sleep'
+    elif rfm_score in ['255', '254', '245', '244', '253', '252', '243', '242', '235', '234', '225', '224', '153', '152', '145', '143', '142', '135', '134', '133', '125', '124']:
+        return 'At Risk'
+    elif rfm_score in ['155', '154', '144', '214', '215', '115', '114',  '113']:
+        return 'Cannot Lose Them'
+    elif rfm_score in ['332', '322', '233', '232', '223', '222', '132', '123', '122', '212', '211']:
+        return 'Hibernating customers'
+    elif rfm_score in ['111', '112', '121', '131', '141', '151']:
+        return 'Lost customers'
+    else:
+        return 'Others'
+
+new_df['Segment'] = new_df['RFM_score'].apply(assign_segment)
+```
+
+### New_df  
+
+```python  
+# Exclude null values
+new_df.head()
+```
+After doing things, new_df will look like this:  
+
+Image  
+
+After that, we do some basic calculations for further analysis  
+- Total_Customers: Count of unique CustomerIDs.  
+- Total_Recency: Sum of Recency scores.  
+- Total_Orders: Sum of Frequency values.  
+- Total_Sales: Sum of Monetary values.
+
+```python
+df_segment = new_df.groupby('Segment').agg(
+    Total_Customers=('CustomerID', 'nunique'),
+    Total_Recency=('Recency', 'sum'),
+    Total_Orders=('Frequency', 'sum'),
+    Total_Sales=('Monetary', 'sum'),
+).reset_index()
+
+df_segment
+```
+
+Image
+
+
+---
+
+## 5️⃣ Visualization  
+### Segment visualization  
+Image  
+
+To simplify the problem, we’ll group 11 segments into 4 groups, based on the similarities from the above distributions, 4 groups are:  
+- The Elite Customers: Champions, Loyal  
+- The Potential Stars: Promising, New Customers, Potential Loyalist, Need Attention  
+- The Fading Ones: At Risk, About to Sleep, Hibernating  
+- The Silent Crowd: Cannot Lose Them, Lost Customers
+
+### Segments to groups  
+
+Image  
+
+```python
+def assign_group(segment):
+    if segment in ['Champions', 'Loyal']:
+        return 'The Elite Customers'
+    elif segment in ['Promising', 'New Customers', 'Potential Loyalist', 'Need Attention']:
+        return 'The Potential Stars'
+    elif segment in ['At Risk', 'About To Sleep', 'Hibernating customers']:
+        return 'The Fading Ones'
+    elif segment in ['Cannot Lose Them', 'Lost customers']:
+        return 'The Silent Crowd'
+    else:
+        return 'Others'
+
+new_df['Group'] = new_df['Segment'].apply(assign_group)
+```
+
+### Groups visualization  
+
+Image
+
+### Number of customers over time visualization  
+
+Image
+
+### RFM over time visualization
+
+Image  
+
+### Customers per Country visualization  
+
+Image  
+
+As it can be seen from the chart, the UK outperforms the others, so we exclude the UK to have clearer insights.
+
+### Customers per Country visualization (without UK)  
+
+
+---
+
+## 6️⃣ Insights & Recommendation  
