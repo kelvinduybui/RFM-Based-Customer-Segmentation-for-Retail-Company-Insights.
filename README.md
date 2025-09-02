@@ -136,7 +136,7 @@ print(null_values_per_column)
 ![Image]  
 
 ⚠️ Note:  
-Null values in **Description** ✅ acceptable
+Null values in **Description** ✅ acceptable  
 Null values in **CustomerID** ❌ not acceptable (as customer segmentation requires valid customer identifiers)
 => We **drop** null values in CustomerID  
 
