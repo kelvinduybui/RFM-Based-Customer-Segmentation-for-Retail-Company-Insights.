@@ -104,7 +104,7 @@ df =pd.read_excel('/content/ecommerce retail.xlsx')
 df.info()  
 ```
 
-**Result**  
+**Result:**  
 ![Image]  
 
 **Python code:**  
@@ -112,7 +112,7 @@ df.info()
 df.describe()  
 ```
 
-**Result**  
+**Result:**  
 ![Image]  
 
 **Python code:**  
@@ -120,7 +120,7 @@ df.describe()
 df.head()  
 ```
 
-**Result**  
+**Result:**  
 ![Image]  
 
 ### Checking null values  
@@ -132,7 +132,7 @@ null_values_per_column = df.isnull().sum()
 print(null_values_per_column)  
 ```
 
-**Result**  
+**Result:**  
 ![Image]  
 
 Null values in Description are acceptable, but nulls in CustomerID are not, as customer segmentation requires valid customer identifiers  
@@ -147,7 +147,7 @@ df['CustomerID'] = df['CustomerID'].astype(int)
 df.count()
 ```
 
-**Result**  
+**Result:**  
 ![Image]  
 
 As we can see, the number of rows has been dropped to 406,829  
