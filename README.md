@@ -78,7 +78,7 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 ---
 
 ## 3️⃣ Data Cleaning & EDA  
-### 📦 Import Libraries  
+### 📦 3.1. Import Libraries  
 
 **Python code:**  
 ```python
@@ -89,7 +89,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 ```
 
-### 📁 Read Excel file  
+### 📁 3.2. Read Excel file  
 
 **Python code:**
 ```python
@@ -97,7 +97,7 @@ import seaborn as sns
 df =pd.read_excel('/content/ecommerce retail.xlsx')
 ```
 
-### 🔎 Explore data  
+### 🔎 3.3. Explore data  
 
 **Python code:**  
 ```python  
@@ -123,7 +123,7 @@ df.head()
 **Result:**  
 ![Image]  
 
-### 🕵️ Checking null values  
+### 🕵️ 3.4. Checking null values  
 
 **Python code:**  
 ```python  
@@ -154,7 +154,7 @@ df.count()
 
 📉 As we can see, the number of rows has been dropped to **406,829**.  
 
-### ⏳ Standardize date format  
+### ⏳ 3.5. Standardize date format  
 Since the current date is set to 31/12/2011, it must be explicitly defined for further calculations  
 
 **Python code:**  
@@ -164,7 +164,7 @@ df['InvoiceDate'] = pd.to_datetime(df['InvoiceDate'])
 current_date = pd.to_datetime('31/12/2011', format='%d/%m/%Y')  
 ```
 
-### 🧾 Handle duplicated values  
+### 🧾 3.6. Handle duplicated values  
 
 There are two types of duplicate records in the dataset:  
 
@@ -190,7 +190,7 @@ df = df.groupby(['InvoiceNo', 'StockCode', 'InvoiceDate', 'CustomerID'], as_inde
 df = df[['InvoiceNo', 'StockCode', 'Description', 'Quantity', 'InvoiceDate', 'UnitPrice', 'CustomerID', 'Country']] 
 ```
 
-### 💰 TotalPrice & IsCancelled
+### 💰 3.7. TotalPrice & IsCancelled  
 Next, we'll generate TotalPrice & IsCancelled to df, where:  
 - **TotalPrice** = Quantity * UnitPrice  
 - **IsCancelled** = InvoiceNo that starts with "C"
@@ -202,7 +202,7 @@ df['TotalPrice'] = df['Quantity'] * df['UnitPrice']
 df['IsCancelled'] = df['InvoiceNo'].astype(str).str.startswith('C')
 ```
 
-### 🔍 Check if UnitPrice <0
+### 🔍 3.8. Check if UnitPrice <0  
 To ensure data quality, we'll check for any records where UnitPrice <0  
 
 **Python code:**  
@@ -215,7 +215,7 @@ df[df['UnitPrice']<0]
 ![Image]  
 🟢 As a result, no invalid UnitPrice found  
 
-### 🛑 Check if IsCancelled = False & Quantity <= 0  
+### 🛑 3.9. Check if IsCancelled = False & Quantity <= 0  
 To further ensure data quality, we'll check for any records where IsCancelled = False & Quantity <= 0  
 
 **Python code:**  
