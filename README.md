@@ -105,7 +105,7 @@ df.info()
 ```
 
 **Result:**  
-<img width="623" height="364" alt="Image" src="https://github.com/user-attachments/assets/8f760f0b-13b9-4f3a-8940-0f5ac53bde90" />
+![image](<img width="623" height="364" alt="Image" src="https://github.com/user-attachments/assets/8f760f0b-13b9-4f3a-8940-0f5ac53bde90" />)
 
 **Python code:**  
 ```python  
