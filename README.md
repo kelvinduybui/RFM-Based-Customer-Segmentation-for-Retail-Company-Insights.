@@ -23,7 +23,7 @@
 - The **customer dataset** is too large for **manual segmentation** this year.  
 - To ensure **efficient resource allocation** and **campaign planning**, the **Data Analytics & Operations team** proposes building an **RFM-based segmentation workflow in Python** to support Marketing's strategy while aligning with the company's overall **operational goals**.  
 
-👥 **Who is this project for?**  
+👥 **Target Audience**  
 - Data Analytics & Operations Team  
 - Marketing & Sales Teams  
 - Decision-makers & stakeholders  
