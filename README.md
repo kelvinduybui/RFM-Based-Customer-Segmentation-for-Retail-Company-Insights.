@@ -105,7 +105,7 @@ df.info()
 ```
 
 **Result:**  
-[![image](https://github.com/user-attachments/assets/8f760f0b-13b9-4f3a-8940-0f5ac53bde90")](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info.png?raw=true)
+https://github.com/user-attachments/assets/8f760f0b-13b9-4f3a-8940-0f5ac53bde90")](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info.png?raw=true
 
 **Python code:**  
 ```python  
@@ -113,7 +113,7 @@ df.describe()
 ```
 
 **Result:**  
-![Image]  
+https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Describe.png?raw=true
 
 **Python code:**  
 ```python  
@@ -121,7 +121,7 @@ df.head()
 ```
 
 **Result:**  
-![Image]  
+https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/df.head.png?raw=true
 
 ### 🕵️ 3.4. Checking null values  
 
