@@ -259,6 +259,7 @@ Next, we’ll calculate Recency, Frequency & Monetary, where:
 - Monetary: The total monetary value of all transactions.  
 All group by CustomerID.
 
+**Python code:**  
 ```python
 # Group by CustomerID to calculate R,F,M  
 new_df = df.groupby('CustomerID').agg(  
@@ -271,6 +272,7 @@ new_df = df.groupby('CustomerID').agg(
 ### Handle unusual values  
 There will be cases where Recency returns NaN, we have to exclude them out of the model  
 
+**Python code:**  
 ```python  
 # Exclude null values  
 new_df = new_df.dropna()  
@@ -278,12 +280,15 @@ new_df = new_df.dropna()
 
 Moreover, cases where Monetary equals 0 indicate fully canceled orders—effectively meaning no purchase was made. These should be excluded from the RFM model  
 
+**Python code:**  
 ```python  
 # Exclude null values
 new_df.drop(new_df[new_df['Monetary'] == 0].index, inplace=True) 
 ```
 
 new_df now:  
+
+**Python code:**  
 ```python   
 new_df.head()  
 ```
@@ -294,6 +299,7 @@ Next, we’ll calculate R_score, F_score & M_score, where:
 - F_score and M_score: Based on the rank of frequency and monetary (ascending), with higher values getting higher scores.
 Each score is assigned into 5 quantiles (1 to 5), & combined to form the RFM_score
 
+**Python code:**  
 ```python  
 new_df['R_score'] = pd.qcut(new_df['Recency'].rank(method='first', ascending=False), 5, labels=[1, 2, 3, 4, 5])
 new_df['F_score'] = pd.qcut(new_df['Frequency'].rank(method='first'), 5, labels=[1, 2, 3, 4, 5])
@@ -303,6 +309,7 @@ new_df['RFM_score'] = new_df['R_score'].astype(str) + new_df['F_score'].astype(s
 
 ### RFM Segmentation  
 
+**Python code:**  
 ```python  
 def assign_segment(rfm_score):  
     if rfm_score in ['555', '554', '544', '545', '454', '455', '445']:  
@@ -335,6 +342,7 @@ new_df['Segment'] = new_df['RFM_score'].apply(assign_segment)
 
 ### New_df  
 
+**Python code:**  
 ```python  
 # Exclude null values
 new_df.head()
@@ -349,6 +357,7 @@ After that, we do some basic calculations for further analysis
 - Total_Orders: Sum of Frequency values.  
 - Total_Sales: Sum of Monetary values.
 
+**Python code:**  
 ```python
 df_segment = new_df.groupby('Segment').agg(
     Total_Customers=('CustomerID', 'nunique'),
@@ -360,6 +369,7 @@ df_segment = new_df.groupby('Segment').agg(
 df_segment
 ```
 
+**Result:**  
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/df_segment.png?raw=true)
 
 
@@ -378,6 +388,7 @@ To simplify the problem, we’ll group 11 segments into 4 groups, based on the s
 
 ### Segments to groups  
 
+**Python code:**  
 ```python
 def assign_group(segment):
     if segment in ['Champions', 'Loyal']:
