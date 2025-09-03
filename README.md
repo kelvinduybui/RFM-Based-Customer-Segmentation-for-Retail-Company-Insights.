@@ -105,7 +105,7 @@ df.info()
 ```
 
 **Result:**  
-![image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info.png?raw=true)  
+![image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info%202.png?raw=true)  
 
 
 **Python code:**  
@@ -134,7 +134,7 @@ print(null_values_per_column)
 ```
 
 **Result:**  
-![Image]  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Null.png?raw=true)  
 
 ⚠️ Note:  
 - Null values in **Description** ✅ acceptable  
@@ -151,7 +151,7 @@ df.count()
 ```
 
 **Result:**  
-![Image]  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/406829.png?raw=true)  
 
 📉 As we can see, the number of rows has been dropped to **406,829**.  
 
@@ -213,7 +213,7 @@ df[df['UnitPrice']<0]
 ```
 
 **Result:**  
-![Image]  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/No.png?raw=true)  
 🟢 As a result, no invalid UnitPrice found  
 
 ### 🛑 3.10. Check if IsCancelled = False & Quantity <= 0  
@@ -226,7 +226,7 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 ```
 
 **Result:**  
-![Image]  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/No.png?raw=true)  
 
 🟢 As a result, no invalid Quantity found, we’ll move to the next phase  
 
@@ -234,7 +234,7 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 
 ## 4️⃣ RFM Analysis
 
-### What’s RFM Model?
+### What’s the RFM Model?
 
 RFM model: a segmentation technique used in marketing and customer relationship management.  
 Objective: to segment and understand customer behavior, which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segments.  
@@ -242,7 +242,7 @@ Objective: to segment and understand customer behavior, which aligns with the cu
 Image  
 
 **Recency (R)**  
-How recently a customer made a purchase.The more recent the purchase, the higher the score.  
+How recently a customer made a purchase. The more recent the purchase, the higher the score.  
 
 **Frequency (F)**  
 How often a customer makes a purchase over a specific period. Higher frequency means a higher score.  
@@ -255,7 +255,7 @@ How much money a customer spends over a given period. Higher spending results in
 ### Calculate RFM  
 Next, we’ll calculate Recency, Frequency & Monetary, where:  
 - Recency: The number of days between the current date and the customer's most recent purchase (excluding cancelled orders).  
-- Frequency : The total number of unique purchase transactions (InvoiceNo), excluding cancelled orders.  
+- Frequency: The total number of unique purchase transactions (InvoiceNo), excluding cancelled orders.  
 - Monetary: The total monetary value of all transactions.  
 All group by CustomerID.
 
@@ -341,7 +341,7 @@ new_df.head()
 ```
 After doing things, new_df will look like this:  
 
-Image  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/new_df.head.png?raw=true)  
 
 After that, we do some basic calculations for further analysis  
 - Total_Customers: Count of unique CustomerIDs.  
@@ -360,14 +360,15 @@ df_segment = new_df.groupby('Segment').agg(
 df_segment
 ```
 
-Image
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/df_segment.png?raw=true)
 
 
 ---
 
 ## 5️⃣ Visualization  
 ### Segment visualization  
-Image  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20count.png?raw=true)
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/RFM%20by%20segment.png?raw=true)
 
 To simplify the problem, we’ll group 11 segments into 4 groups, based on the similarities from the above distributions, 4 groups are:  
 - The Elite Customers: Champions, Loyal  
@@ -376,8 +377,6 @@ To simplify the problem, we’ll group 11 segments into 4 groups, based on the s
 - The Silent Crowd: Cannot Lose Them, Lost Customers
 
 ### Segments to groups  
-
-Image  
 
 ```python
 def assign_group(segment):
@@ -397,24 +396,24 @@ new_df['Group'] = new_df['Segment'].apply(assign_group)
 
 ### Groups visualization  
 
-Image
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20distri%20by%20Griup.png?raw=true)
 
 ### Number of customers over time visualization  
 
-Image
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Unique%20customer%20per%20group%20per%20month.png?raw=true)
 
 ### RFM over time visualization
 
-Image  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/RFM%20by%20month.png?raw=true)  
 
 ### Customers per Country visualization  
 
-Image  
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20by%20country.png?raw=true)  
 
 As it can be seen from the chart, the UK outperforms the others, so we exclude the UK to have clearer insights.
 
 ### Customers per Country visualization (without UK)  
-
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20by%20country%20(no%20UK).png?raw=true)
 
 ---
 
