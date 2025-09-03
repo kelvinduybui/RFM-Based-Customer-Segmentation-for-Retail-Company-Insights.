@@ -105,7 +105,7 @@ df.info()
 ```
 
 **Result:**  
-![image]](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info.png?raw=true)  
+![image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info.png?raw=true)  
 
 
 **Python code:**  
