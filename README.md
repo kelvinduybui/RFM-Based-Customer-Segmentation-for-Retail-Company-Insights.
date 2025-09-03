@@ -5,12 +5,12 @@
 **Tools Used:** Python  
 
 ## 🗂️ Table of Contents
-[1️⃣ Context](#1️⃣-context)  
-[2️⃣ Dataset Description & Data Structure (DD & DS)](#2️⃣-dataset-description--data-structure-dd--ds)  
-[3️⃣ Data Cleaning & EDA](#3️⃣-data-cleaning--eda)  
-[4️⃣ RFM Analysis](#4️⃣-rfm-analysis)  
-[5️⃣ Visualization](#5️⃣-visualization)  
-[6️⃣ Insights & Recommendations](#6️⃣-insights--recommendations)  
+[1️⃣ Context](#context)  
+[2️⃣ Dataset Description & Data Structure (DD & DS)](#dataset-description--data-structure-dd--ds)  
+[3️⃣ Data Cleaning & EDA](#data-cleaning--eda)  
+[4️⃣ RFM Analysis](#rfm-analysis)  
+[5️⃣ Visualization](#visualization)  
+[6️⃣ Insights & Recommendations](#insights--recommendations)
 
 ---
 
