@@ -238,8 +238,6 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 RFM model: a segmentation technique used in marketing and customer relationship management.  
 Objective: to segment and understand customer behavior, which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segments.  
 
-Image  
-
 **Recency (R)**  
 How recently a customer made a purchase. The more recent the purchase, the higher the score.  
 
@@ -291,6 +289,8 @@ new_df now:
 ```python   
 new_df.head()  
 ```
+
+!Image[https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/new_df.head.png?raw=true]
 
 ### Calculate RFM Score
 Next, we’ll calculate R_score, F_score & M_score, where:
