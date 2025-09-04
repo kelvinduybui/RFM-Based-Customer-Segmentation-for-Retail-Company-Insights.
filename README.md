@@ -58,6 +58,27 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 | CustomerID     | float64          | Unique identifier for each customer.                            |
 | Country        | object           | Name of the country where the customer resides.                  |
 
+### What’s the RFM Model?
+
+RFM model: a segmentation technique used in marketing and customer relationship management.  
+Objective: to segment and understand customer behavior, which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segments.  
+
+**Recency (R)**  
+How recently a customer made a purchase. The more recent the purchase, the higher the score.  
+
+**Frequency (F)**  
+How often a customer makes a purchase over a specific period. Higher frequency means a higher score.  
+
+**Monetary Value (M)**  
+How much money a customer spends over a given period. Higher spending results in a higher score.  
+
+### Reference Table
+| Dimension | 5 | 4 | 3 | 2 | 1 |
+|-----------|---|---|---|---|---|
+| **Recency**   | Very recently | Fairly recently | Moderately recently | Long time ago | Very long time ago |
+| **Frequency** | Very frequent | Frequent | Moderate | Infrequent | Hardly ever |
+| **Monetary**  | Very high | High | Moderate | Low | Very low |
+
 ### 🏷️ Segmentation & RFM Score  
 
 | Segment               | RFM Score                                                                                                                        |
@@ -231,24 +252,7 @@ df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
 
 ---
 
-## 4️⃣ RFM Analysis
-
-### What’s the RFM Model?
-
-RFM model: a segmentation technique used in marketing and customer relationship management.  
-Objective: to segment and understand customer behavior, which aligns with the customer segmentation application rule-based segmentation method by mapping specific RFM score combinations to meaningful customer segments.  
-
-**Recency (R)**  
-How recently a customer made a purchase. The more recent the purchase, the higher the score.  
-
-**Frequency (F)**  
-How often a customer makes a purchase over a specific period. Higher frequency means a higher score.  
-
-**Monetary Value (M)**  
-How much money a customer spends over a given period. Higher spending results in a higher score  
-
-### What’s RFM Model?
-
+## 4️⃣ RFM Analysis  
 ### Calculate RFM  
 Next, we’ll calculate Recency, Frequency & Monetary, where:  
 - Recency: The number of days between the current date and the customer's most recent purchase (excluding cancelled orders).  
@@ -290,7 +294,7 @@ new_df now:
 new_df.head()  
 ```
 
-!Image[https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/new_df.head.png?raw=true]
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/new_df.head.png?raw=true)
 
 ### Calculate RFM Score
 Next, we’ll calculate R_score, F_score & M_score, where:
@@ -428,11 +432,11 @@ As it can be seen from the chart, the UK outperforms the others, so we exclude t
 ---
 
 ## 6️⃣ Insights & Recommendations  
-### Group insights
+### Group insights  
 - **The Fading Ones** (32.3%): These customers likely haven’t interacted recently or frequently, suggesting potential churn risk. They may require re-engagement strategies.  
 - **The Elite Customers** (29.2%): The second-largest group. These are high-value, loyal customers who should be prioritized with loyalty programs and exclusive offers.  
-- **The Potential Stars** (25.1%): Promising customers who may not have reached elite status yet but are trending positively. They are good candidates for upselling & nurturing.
-- **The Silent Crowd** (13.4%): The smallest segment, likely consisting of low-value customers. They might not be worth a heavy investment unless reactivation is cost-effective
+- **The Potential Stars** (25.1%): Promising customers who may not have reached elite status yet but are trending positively. They are good candidates for upselling & nurturing.  
+- **The Silent Crowd** (13.4%): The smallest segment, likely consisting of low-value customers. They might not be worth a heavy investment unless reactivation is cost-effective.  
 
 ### Group recommendation  
 **1. The Elite Customers**  
@@ -462,6 +466,7 @@ As it can be seen from the chart, the UK outperforms the others, so we exclude t
 - Address **rising Recency** scores — Implement strategies like remarketing emails, loyalty incentives, or personalized reminders to shorten the time between purchases.  
 - Understand why **customer numbers fell during the holiday season**, a time when customer traffic is typically expected to rise — consider reviewing campaign timing, product relevance, or external market factors.  
 
+### Countries insights & recommendation
 #### Insights:  
 - The **United Kingdom** dominates the customer base, with a high number of **Elite Customers** and **Potential Stars** → remains the core revenue driver.  
 - France, Germany, and Belgium show promising volumes of valuable customers → potential secondary markets for focused efforts.  
