@@ -380,8 +380,15 @@ df_segment
 
 ## 5️⃣ Visualization  
 ### Segment visualization  
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20count.png?raw=true)
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/RFM%20by%20segment.png?raw=true)
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20count.png?raw=true)  
+
+#### Key Takeaway:  
+Champions and Hibernating Customers are the largest groups, while Cannot Lose Them and Promising are the smallest—showing a strong engaged base but also many inactive customers, highlighting both retention and reactivation opportunities.  
+
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/RFM%20by%20segment.png?raw=true)  
+
+#### Key Takeaway:  
+The clear differences across segments highlight the potential for creating more granular sub-segmentation to better tailor customer strategies.  
 
 To simplify the problem, we’ll group 11 segments into 4 groups, based on the similarities from the above distributions, 4 groups are:  
 - The Elite Customers: Champions, Loyal  
@@ -410,24 +417,37 @@ new_df['Group'] = new_df['Segment'].apply(assign_group)
 
 ### Groups visualization  
 
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20distri%20by%20Griup.png?raw=true)
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20distri%20by%20Griup.png?raw=true)  
+
+#### Key Takeaway:  
+The customer groups rank from largest to smallest as The Fading Ones (32.3%), The Elite Customers (29.2%), The Potential Stars (25.1%), and The Silent Crowd (13.4%).  
 
 ### Number of customers over time visualization  
 
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Unique%20customer%20per%20group%20per%20month.png?raw=true)
+![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Unique%20customer%20per%20group%20per%20month.png?raw=true)  
+
+#### Key Takeaway:  
+The Elite Customers remain the largest and most stable group, while The Potential Stars surged late in 2011 before dropping. The Fading Ones declined, and The Silent Crowd nearly disappeared.  
 
 ### RFM over time visualization
 
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/RFM%20by%20month.png?raw=true)  
 
+#### Key Takeaway:  
+The chart shows that R_score improved sharply in the last months of 2011, reaching its peak in December, while F_score and M_score stayed relatively stable with slight declines before recovering at year-end.  
+
 ### Customers per Country visualization  
 
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20by%20country.png?raw=true)  
 
-As it can be seen from the chart, the UK outperforms the others, so we exclude the UK to have clearer insights.
+#### Key Takeaway:  
+As it can be seen from the chart, the UK outperforms the others, so we exclude the UK to have clearer insights.  
 
 ### Customers per Country visualization (without UK)  
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Customer%20by%20country%20(no%20UK).png?raw=true)
+
+#### Key Takeaway:  
+The chart shows that a certain number of customers come from some specific European countries, while most other countries contribute only a small share. This indicates that customers are mainly concentrated in a few major markets.  
 
 ---
 
