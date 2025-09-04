@@ -44,7 +44,6 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 - **Sheets:** E-commerce retail, Segmentation  
 - **Format:** .xlsx  
 - **Time range:** 01/12/2010 – 09/12/2011  
-- **Business type:** UK-based, non-store online retailer specializing in unique all-occasion gifts  
 
 ### 🗃️ E-commerce Retail Schema
 
