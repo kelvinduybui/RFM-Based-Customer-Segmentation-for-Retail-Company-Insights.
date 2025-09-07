@@ -1,4 +1,4 @@
-# 🛍️ RFM Segmentation for Retail Customer Insights | Python
+# 🛍️ RFM-Based Customer Segmentation for Retail Company Insights | Python
 
 **Author:** Bùi Xuân Bảo Duy (Kelvin)  
 **Date:** July 2025  
