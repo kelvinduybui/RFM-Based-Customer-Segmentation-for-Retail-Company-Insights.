@@ -33,7 +33,7 @@ To segment customers using RFM analysis to identify high-value groups, uncover b
 
 🛠️ **Tools Used**  
 - Excel: For initial data storage  
-- Google Colab (Python): For data cleaning, preprocessing, RFM analysis, segmentation, and visualization  
+- Google Colab (Python): For data cleaning, preprocessing, RFM analysis, segmentation, and visualization, using packages such as pandas, numpy, matplotlib, seaborn, etc.
 
 ---
 
@@ -73,11 +73,12 @@ How often a customer makes a purchase over a specific period. Higher frequency m
 How much money a customer spends over a given period. Higher spending results in a higher score.  
 
 ### Reference Table
-| Dimension | 5 | 4 | 3 | 2 | 1 |
-|-----------|---|---|---|---|---|
-| **Recency**   | Very recently | Fairly recently | Moderately recently | Long time ago | Very long time ago |
-| **Frequency** | Very frequent | Frequent | Moderate | Infrequent | Hardly ever |
-| **Monetary**  | Very high | High | Moderate | Low | Very low |
+| Dimension   | 5                  | 4               | 3                   | 2             | 1                  |
+|-------------|--------------------|-----------------|---------------------|---------------|--------------------|
+| **Recency** | Very recently      | Fairly recently | Moderately recently | Long time ago | Very long time ago |
+| **Frequency** | Very frequent    | Frequent        | Moderate            | Infrequent    | Hardly ever        |
+| **Monetary**  | Very high spending | High spending   | Moderate spending   | Low spending  | Very low spending  |
+
 
 ### 🏷️ Segmentation & RFM Score  
 
@@ -119,61 +120,20 @@ df =pd.read_excel('/content/ecommerce retail.xlsx')
 
 ### 🔎 3.3. Explore data  
 
-**Python code:**  
-```python  
-df.info()  
-```
-
-**Result:**  
-![image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/info%202.png?raw=true)  
-
-
-**Python code:**  
-```python  
-df.describe()  
-```
-
-**Result:**  
-![image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Describe.png?raw=true)
-
-**Python code:**  
-```python  
-df.head()  
-```
-
-**Result:**  
-![image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/df.head.png?raw=true)
+- Checked **data types & structure** → dataset includes both object and numeric columns, with a large number of records.  
+- **Summary statistics** (min, max, mean, etc.) helped identify potential outliers.  
+- Reviewed **sample records** (head) to understand the data format.  
 
 ### 🕵️ 3.4. Checking null values  
 
-**Python code:**  
-```python  
-# Checking null values  
-null_values_per_column = df.isnull().sum()  
-print(null_values_per_column)  
-```
-
-**Result:**  
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/Null.png?raw=true)  
-
-⚠️ Note:  
-- Null values in **Description** ✅ acceptable  
-- Null values in **CustomerID** ❌ not acceptable (as customer segmentation requires valid customer identifiers)
-=> We **drop** null values in CustomerID  
+- Null values in **Description** → acceptable.  
+- Null values in **CustomerID** → not acceptable, since segmentation requires valid customer identifiers.  
+- Action: rows with missing **CustomerID** need to be dropped.  
 
 ### 🧹 3.5. Drop null values  
-**Python code:**  
-```python  
-# Drop null values  
-df = df.dropna(subset=['CustomerID'])  
-df['CustomerID'] = df['CustomerID'].astype(int)  
-df.count()
-```
 
-**Result:**  
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/406829.png?raw=true)  
-
-📉 As we can see, the number of rows has been dropped to **406,829**.  
+- After removing rows with null **CustomerID** and converting to integer, the dataset was reduced to **406,829 rows**.  
+- This cleaned dataset will be used for the RFM analysis.
 
 ### ⏳ 3.6. Standardize date format  
 Since the current date is set to 31/12/2011, it must be explicitly defined for further calculations  
@@ -189,13 +149,8 @@ current_date = pd.to_datetime('31/12/2011', format='%d/%m/%Y')
 
 There are two types of duplicate records in the dataset:  
 
-- **Fully duplicated rows**: All values in the columns `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID`, and `Quantity` are exactly the same.  
-
-- **Partially duplicated rows**: The columns `InvoiceNo`, `StockCode`, `InvoiceDate`, and `CustomerID` are the same, but the `Quantity` values differ.  
-
-Data cleaning steps:  
-1. **Remove** all fully duplicated rows.  
-2. For partially duplicated rows (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`), **sum up** the quantities to consolidate them into single entries.  
+- **Fully duplicated rows** (all values in `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID`, `Quantity` are the same) → **remove**.  
+- **Partially duplicated rows** (same `InvoiceNo`, `StockCode`, `InvoiceDate`, `CustomerID` but different `Quantity`) → **sum up** the quantities and consolidate into single entries.  
 
 **Python code:**  
 ```python  
@@ -223,32 +178,11 @@ df['TotalPrice'] = df['Quantity'] * df['UnitPrice']
 df['IsCancelled'] = df['InvoiceNo'].astype(str).str.startswith('C')
 ```
 
-### 🔍 3.9. Check if UnitPrice <0  
-To ensure data quality, we'll check for any records where UnitPrice <0  
-
-**Python code:**  
-```python
-# Check if UnitPrice <0  
-df[df['UnitPrice']<0]
-```
-
-**Result:**  
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/No.png?raw=true)  
-🟢 As a result, no invalid UnitPrice found  
+### 🔍 3.9. Check if UnitPrice < 0  
+To ensure data validity, we checked for negative `UnitPrice` values, as sales transactions cannot have negative prices. No such records were found.  
 
 ### 🛑 3.10. Check if IsCancelled = False & Quantity <= 0  
-To further ensure data quality, we'll check for any records where IsCancelled = False & Quantity <= 0  
-
-**Python code:**  
-```python
-# Check if IsCancelled = False & Quantity <= 0
-df[(df['IsCancelled'] == False) & (df['Quantity'] <= 0)]
-```
-
-**Result:**  
-![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/No.png?raw=true)  
-
-🟢 As a result, no invalid Quantity found, we’ll move to the next phase  
+We also verified that all non-cancelled transactions (`IsCancelled = False`) have positive quantities. No invalid records were detected.  
 
 ---
 
@@ -271,28 +205,9 @@ new_df = df.groupby('CustomerID').agg(
 ```
 
 ### Handle unusual values  
-There will be cases where Recency returns NaN, we have to exclude them out of the model  
-
-**Python code:**  
-```python  
-# Exclude null values  
-new_df = new_df.dropna()  
-```
-
-Moreover, cases where Monetary equals 0 indicate fully canceled orders—effectively meaning no purchase was made. These should be excluded from the RFM model  
-
-**Python code:**  
-```python  
-# Exclude null values
-new_df.drop(new_df[new_df['Monetary'] == 0].index, inplace=True) 
-```
-
-new_df now:  
-
-**Python code:**  
-```python   
-new_df.head()  
-```
+- There will be cases where Recency returns NaN, we have to exclude them out of the model
+- Moreover, cases where Monetary equals 0 indicate fully canceled orders—effectively meaning no purchase was made. These should be excluded from the RFM model  
+- new_df now:  
 
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/new_df.head.png?raw=true)
 
@@ -344,12 +259,6 @@ new_df['Segment'] = new_df['RFM_score'].apply(assign_segment)
 ```
 
 ### New_df  
-
-**Python code:**  
-```python  
-# Exclude null values
-new_df.head()
-```
 After doing things, new_df will look like this:  
 
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/new_df.head.png?raw=true)  
@@ -434,7 +343,7 @@ The customer groups rank from largest to smallest as **The Fading Ones (32.3%), 
 ![Image](https://github.com/kelvinduybui/RFM-Segmentation-for-Retail-Customer-Insights-Python/blob/main/Images/RFM%20by%20month.png?raw=true)  
 
 #### Key Takeaway:  
-The chart shows that **R_score** **improved** sharply in the last months of 2011, reaching its peak in December, while **F_score** and **M_score** stayed relatively **stable** with slight declines before recovering at year-end.  
+The chart shows that **R_score** **improved** sharply in the last months of 2011, reaching its peak in December (this is expected since Recency is calculated based on the cut-off date, so purchases closer to Dec-2011 naturally lead to higher R_scores), while **F_score** and **M_score** stayed relatively **stable** with slight declines before recovering at year-end.
 
 ### Customers per Country visualization  
 
@@ -478,12 +387,10 @@ The chart shows that a certain number of customers come from some specific **Eur
 ### RFM insights & recommendation  
 #### Insights:  
 - **The Elite Customers** and **Potential Stars** grew steadily throughout the year, becoming key segments, but both **dropped sharply** in December 2011.  
-- **Recency** scores **increased significantly** over time, indicating customers took **longer** to return for their next purchase.  
 - **Frequency** and **Monetary** scores were **relatively flat**, with a dip around August and a slight recovery by December 2011.  
 
 #### Recommendation:  
 - Investigate the **sharp decline** in December 2011 — Was there a change in promotions, stock issues, or technical problems during a critical holiday period?  
-- Address **rising Recency** scores — Implement strategies like remarketing emails, loyalty incentives, or personalized reminders to shorten the time between purchases.  
 - Understand why **customer numbers fell during the holiday season**, a time when customer traffic is typically expected to rise — consider reviewing campaign timing, product relevance, or external market factors.  
 
 ### Countries insights & recommendation
